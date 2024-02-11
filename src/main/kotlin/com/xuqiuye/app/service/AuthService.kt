@@ -59,7 +59,7 @@ class AuthServiceImpl(
 
     private fun checkIfUserEmailExisted(email: String) {
         val user = userRepository.findUserByEmail(email)
-        if(user != null) {
+        if (user != null) {
             throw UserEmailAlreadyExistedException("User email already registered")
         }
     }

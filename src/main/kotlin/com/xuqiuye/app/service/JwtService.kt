@@ -39,7 +39,6 @@ class JwtService(
         userDetails: UserDetails,
         expiration: Long
     ): String {
-
         return Jwts.builder()
             .claims()
             .subject(userDetails.username)
