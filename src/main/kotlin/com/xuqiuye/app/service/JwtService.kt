@@ -17,7 +17,7 @@ class JwtService {
         key.toByteArray()
     )
 
-    fun extractUsername(jwtToken: String): String {
+    fun extractUsername(jwtToken: String): String? {
         return extractClaim(jwtToken) { obj: Claims -> obj.subject }
     }
 
