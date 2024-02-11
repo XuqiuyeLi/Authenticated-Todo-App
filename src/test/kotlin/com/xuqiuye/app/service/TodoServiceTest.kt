@@ -99,6 +99,61 @@ class TodoServiceTest {
         assertThat(result, equalTo(savedNote))
     }
 
+    @Test
+    fun `updateTodo() will return an updated todo with same id`() {
+        val oct19 = ZonedDateTime.of(2023, 10, 19, 20, 20, 20, 0, ZoneId.of("Asia/Tokyo")).toInstant()
+        setFixedDateTimeToSystemClock(oct19)
+        val originalTodo = Todo(
+            id = 0,
+            name = "Play tennis",
+            priority = Priority.MEDIUM,
+            subtasks = mutableListOf(
+                Subtask("book a tennis court")
+            )
+        )
+        val todoForUpdate = Todo(
+            name = "Play tennis with friends",
+            priority = Priority.HIGH,
+            subtasks = mutableListOf(
+                Subtask("check friends' schedule"),
+                Subtask("book a tennis court")
+            )
+        )
+
+        todoService.createTodo(Todo())
+        val secondSavedNote = todoService.createTodo(originalTodo)
+
+        val result = todoService.updateTodo(secondSavedNote.id, todoForUpdate)
+
+        assertThat(result.id, equalTo(secondSavedNote.id))
+        assertThat(result.name, equalTo(todoForUpdate.name))
+        assertThat(result.priority, equalTo(todoForUpdate.priority))
+        assertThat(result.completeStatus, equalTo(secondSavedNote.completeStatus))
+        assertThat(result.subtasks, equalTo(todoForUpdate.subtasks))
+    }
+
+    @Test
+    fun `deleteTodo() will delete a todo with certain id`() {
+        val oct19 = ZonedDateTime.of(2023, 10, 19, 20, 20, 20, 0, ZoneId.of("Asia/Tokyo")).toInstant()
+        setFixedDateTimeToSystemClock(oct19)
+
+        todoService.createTodo(Todo())
+        val secondSavedNote = todoService.createTodo(
+            Todo(
+                id = 0,
+                name = "Play tennis",
+                priority = Priority.MEDIUM,
+                subtasks = mutableListOf(
+                    Subtask("book a tennis court")
+                )
+            )
+        )
+
+        val result = todoService.deleteTodo(secondSavedNote.id)
+
+        assertThat(result, equalTo(secondSavedNote))
+    }
+
     private fun setFixedDateTimeToSystemClock(now: Instant) {
         every { Instant.now() } returns now
     }
