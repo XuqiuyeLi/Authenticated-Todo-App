@@ -7,27 +7,61 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
-@Table(name = "_user")
-data class User (
+@Table(name = "_users")
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0,
 
     @NotBlank
     @Column(name = "firstName", nullable = false)
-    val firstName: String = "",
+    private var firstName: String = "",
 
     @NotBlank
     @Column(name = "lastName", nullable = false)
-    val lastName: String = "",
+    private var lastName: String = "",
 
     @NotBlank
     @Column(name = "email", nullable = false)
-    val email: String = "",
+    private var email: String,
 
     @NotBlank
     @Column(name = "password", nullable = false)
-    val password: String = ""
-)
+    private var password: String,
+
+) : UserDetails {
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPassword(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun getUsername(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun isEnabled(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+
+    // Standard getters and setters if needed
+}
