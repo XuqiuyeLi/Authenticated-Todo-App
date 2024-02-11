@@ -1,6 +1,5 @@
 package com.xuqiuye.app.config
 
-import com.xuqiuye.app.repository.TokenRepository
 import com.xuqiuye.app.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
@@ -18,8 +17,7 @@ import java.io.IOException
 @Component
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
-    private val userDetailsService: UserDetailsService,
-    private val tokenRepository: TokenRepository
+    private val userDetailsService: UserDetailsService
 ) : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
@@ -27,6 +25,10 @@ class JwtAuthenticationFilter(
         @NonNull response: HttpServletResponse,
         @NonNull filterChain: FilterChain
     ) {
+        if (request.servletPath.contains("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // this is the header that contains bearer token
         val authHeader = request.getHeader("Authorization")
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

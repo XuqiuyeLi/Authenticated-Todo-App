@@ -23,7 +23,7 @@ class AuthServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val authenticationManager: AuthenticationManager
-): AuthService {
+) : AuthService {
     override fun register(request: RegisterRequest): AuthResponse {
         val newUser = User(
             firstName = request.firstName,
@@ -48,7 +48,7 @@ class AuthServiceImpl(
         val user = userRepository.findUserByEmail(request.email)
             ?: throw UsernameNotFoundException("User not found")
 
-        val jwtToken = jwtService.generateToken(userDetails = user)
-        return AuthResponse(jwtToken)
+        val accessToken = jwtService.generateToken(userDetails = user)
+        return AuthResponse(accessToken)
     }
 }

@@ -2,7 +2,6 @@ package com.xuqiuye.app.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -22,12 +21,8 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth", "api/auth/refresh", "/error")
+                    .requestMatchers("/api/v1/auth/**", "/error")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user")
-                    .permitAll()
-                    .requestMatchers("/api/user**")
-                    .hasRole("ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()
             }

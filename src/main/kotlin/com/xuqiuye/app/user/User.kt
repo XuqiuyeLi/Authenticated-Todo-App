@@ -14,7 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
-@Table(name = "_users")
+@Table(name = "_user")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +29,7 @@ class User(
     private var lastName: String = "",
 
     @NotBlank
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private var email: String,
 
     @NotBlank
