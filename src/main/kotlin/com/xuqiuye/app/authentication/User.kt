@@ -2,12 +2,15 @@ package com.xuqiuye.app.authentication
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
@@ -33,33 +36,38 @@ class User(
     @Column(name = "password", nullable = false)
     private var password: String,
 
-) : UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private var role: Role
 
-    override fun getPassword(): String {
-        TODO("Not yet implemented")
+) : UserDetails {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
+        // user can only have a single role
+        return listOf(SimpleGrantedAuthority(role.name))
     }
 
     override fun getUsername(): String {
-        TODO("Not yet implemented")
+        return email
+    }
+
+    override fun getPassword(): String {
+        return password
     }
 
     override fun isAccountNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isAccountNonLocked(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isCredentialsNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isEnabled(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
 
