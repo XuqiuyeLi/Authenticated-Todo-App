@@ -1,4 +1,4 @@
-package com.xuqiuye.app.authentication
+package com.xuqiuye.app.user
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

@@ -1,4 +1,4 @@
-package com.xuqiuye.app.authentication
+package com.xuqiuye.app.user
 
 enum class Role {
     USER,

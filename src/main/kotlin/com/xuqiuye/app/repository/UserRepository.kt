@@ -1,6 +1,6 @@
 package com.xuqiuye.app.repository
 
-import com.xuqiuye.app.authentication.User
+import com.xuqiuye.app.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<User, Long> {

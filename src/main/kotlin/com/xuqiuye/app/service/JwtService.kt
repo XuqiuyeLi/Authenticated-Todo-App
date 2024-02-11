@@ -22,7 +22,7 @@ class JwtService(
     }
 
     fun generateToken(
-        extraClaims: Map<String, Any>,
+        extraClaims: Map<String, Any> = emptyMap(),
         userDetails: UserDetails
     ): String {
         return buildToken(extraClaims, userDetails, jwtProperties.accessTokenExpiration)
