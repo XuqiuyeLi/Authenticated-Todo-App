@@ -70,6 +70,5 @@ class User(
         return true
     }
 
-
     // Standard getters and setters if needed
 }
