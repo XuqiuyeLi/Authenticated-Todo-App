@@ -26,8 +26,8 @@ class JwtAuthenticationFilter(
         @NonNull filterChain: FilterChain
     ) {
         if (request.servletPath.contains("/api/v1/auth")) {
-            filterChain.doFilter(request, response);
-            return;
+            filterChain.doFilter(request, response)
+            return
         }
         // this is the header that contains bearer token
         val authHeader = request.getHeader("Authorization")

@@ -3,9 +3,11 @@ package com.xuqiuye.app.service
 import com.xuqiuye.app.authentication.AuthRequest
 import com.xuqiuye.app.authentication.AuthResponse
 import com.xuqiuye.app.authentication.RegisterRequest
+import com.xuqiuye.app.exception.UserEmailAlreadyExistedException
 import com.xuqiuye.app.repository.UserRepository
 import com.xuqiuye.app.user.Role
 import com.xuqiuye.app.user.User
+import jakarta.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -24,6 +26,8 @@ class AuthServiceImpl(
     private val jwtService: JwtService,
     private val authenticationManager: AuthenticationManager
 ) : AuthService {
+
+    @Transactional
     override fun register(request: RegisterRequest): AuthResponse {
         val newUser = User(
             firstName = request.firstName,
@@ -32,6 +36,7 @@ class AuthServiceImpl(
             password = passwordEncoder.encode(request.password),
             role = Role.USER
         )
+        checkIfUserEmailExisted(request.email)
         userRepository.save(newUser)
         val jwtToken = jwtService.generateToken(userDetails = newUser)
         return AuthResponse(jwtToken)
@@ -50,5 +55,12 @@ class AuthServiceImpl(
 
         val accessToken = jwtService.generateToken(userDetails = user)
         return AuthResponse(accessToken)
+    }
+
+    private fun checkIfUserEmailExisted(email: String) {
+        val user = userRepository.findUserByEmail(email)
+        if(user != null) {
+            throw UserEmailAlreadyExistedException("User email already registered")
+        }
     }
 }
