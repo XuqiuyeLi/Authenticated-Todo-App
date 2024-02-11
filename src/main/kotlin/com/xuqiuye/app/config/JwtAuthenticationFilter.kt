@@ -34,13 +34,14 @@ class JwtAuthenticationFilter(
             return
         }
         // extract out the JWT token
-        val jwtTokenStartIndex = 7
-        val jwtToken: String = authHeader.substring(jwtTokenStartIndex)
+        val jwtToken: String = authHeader.substringAfter("Bearer ")
 
         // extract out the user email
         val userEmail: String? = jwtService.extractUsername(jwtToken)
         // if use has not been authenticated
         updateSecurityContextIfUserIsNotAuthenticatedYet(userEmail, jwtToken, request)
+        // go to next request and response
+        filterChain.doFilter(request, response)
     }
 
     private fun updateSecurityContextIfUserIsNotAuthenticatedYet(

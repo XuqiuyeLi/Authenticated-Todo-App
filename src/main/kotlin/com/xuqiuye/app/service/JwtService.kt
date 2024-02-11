@@ -1,5 +1,6 @@
 package com.xuqiuye.app.service
 
+import com.xuqiuye.app.config.JwtProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -8,13 +9,12 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JwtService {
+class JwtService(
+    private val jwtProperties: JwtProperties
+) {
     // save key, jwtExpiration, refreshExpiration to env variables
-    private val key = "NfrqXH5FLWlSK48GwBqqqU2lwjH0oK9X"
-    private val jwtExpiration = 2000000L
-    private val refreshExpiration = 3000000L
     private val secretKey = Keys.hmacShaKeyFor(
-        key.toByteArray()
+        jwtProperties.secretKey.toByteArray()
     )
 
     fun extractUsername(jwtToken: String): String? {
@@ -25,13 +25,13 @@ class JwtService {
         extraClaims: Map<String, Any>,
         userDetails: UserDetails
     ): String {
-        return buildToken(extraClaims, userDetails, jwtExpiration)
+        return buildToken(extraClaims, userDetails, jwtProperties.accessTokenExpiration)
     }
 
     fun generateRefreshToken(
         userDetails: UserDetails
     ): String {
-        return buildToken(userDetails = userDetails, expiration = refreshExpiration)
+        return buildToken(userDetails = userDetails, expiration = jwtProperties.refreshTokenExpiration)
     }
 
     fun buildToken(
