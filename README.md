@@ -68,7 +68,3 @@ The app defines following CRUD APIs after the user is authenticated.
     
     DELETE /api/v1/todos/{id}
 
-
-## Check out deployed app
-The app is deployed to AWS Elastics Beanstalk
-You can use Postman or other tools to interact with the deployed app at http://app-dev.ap-northeast-1.elasticbeanstalk.com
